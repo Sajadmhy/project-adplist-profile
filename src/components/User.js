@@ -9,10 +9,15 @@ export default function User() {
     const [cookies, setCookie] = useCookies(); 
     
     useEffect (() => {
-      setCookie("isAuth" , isAuthenticated);
-      setCookie("username" , user?.name);
-      setCookie("email" , user?.email);
-      setCookie("picture" , user?.picture);
+      if ( cookies.logout == true) {
+        setCookie("username" , undefined);
+        setCookie("email" , undefined);
+        setCookie("picture" , undefined);
+      } else if ( isAuthenticated === true ) {
+        setCookie("username" , user?.name);
+        setCookie("email" , user?.email);
+        setCookie("picture" , user?.picture);
+      }
   }
   , []);
 
@@ -20,9 +25,9 @@ export default function User() {
     return (  
       (cookies.isAuth2 == 'true') && (
         <div className="User">
-          <img src={cookies.picture} alt={cookies?.username} />
-          <h2>{cookies.username}</h2>
-          <p>{cookies.email}</p>
+          <img src={cookies?.picture} alt={cookies?.username} />
+          <h2>{cookies?.username}</h2>
+          <p>{cookies?.email}</p>
         </div>
       )
   );
