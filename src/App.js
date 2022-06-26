@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { useAuth0 } from '@auth0/auth0-react';
+import LoginButton from './components/LoginButton';
+import LogoutButton from './components/LogoutButton';
+import User from './components/User';
+import './App.css'
+import { useCookies } from 'react-cookie';
+import { useEffect, useMemo } from 'react';
 
 function App() {
+  const { isAuthenticated } = useAuth0();
+  const [cookies, setCookie] = useCookies();
+
+  useMemo (() => {
+      setCookie("isAuth1" , isAuthenticated); 
+      setCookie('isAuth2' , isAuthenticated);
+  }, [isAuthenticated, setCookie]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      { !(cookies.isAuth2 == 'true') ? (
+        <div>
+          <p style={{ fontSize: "1.5rem" }}>App 2 <br/>Please Login</p>
+           <LoginButton />
+        </div>
+      ) :
+        <div>
+            <LogoutButton />
+            <div className='space'></div>
+            <User />
+        </div>}
     </div>
   );
 }
