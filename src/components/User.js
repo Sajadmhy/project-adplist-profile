@@ -2,13 +2,13 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import './User.css';
 import { useCookies } from "react-cookie";
-import { useMemo , useEffect} from 'react';
+import { useEffect, useMemo} from 'react';
 
 export default function User() {
     const { user, isAuthenticated } = useAuth0();
     const [cookies, setCookie] = useCookies(); 
     
-    useEffect (() => {
+    useEffect(() => {
       if ( cookies.logout == true) {
         setCookie("username" , undefined);
         setCookie("email" , undefined);
@@ -16,7 +16,7 @@ export default function User() {
       } else if ( isAuthenticated === true ) {
         setCookie("username" , user?.name);
         setCookie("email" , user?.email);
-        setCookie("picture" , user?.picture);
+        setCookie("picture" , user.picture);
       }
   }
   , []);
